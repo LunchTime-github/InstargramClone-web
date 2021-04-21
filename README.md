@@ -9,3 +9,10 @@
 - graphql
 - react-helmet-async
 - @fortawesome/react-fontawesome
+
+## Set Up
+
+- [ ] Router
+- [ ] Authentication
+- [ ] Arch.
+- [ ] Styles
