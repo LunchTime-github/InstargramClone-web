@@ -3,6 +3,7 @@
 ## Use Asset
 
 - styled-components
+- styled-reset
 - react-hook-form
 - react-router-dom
 - @apollo/client
@@ -15,4 +16,5 @@
 - [x] Router
 - [x] Authentication
 - [x] Arch.
-- [ ] Styles
+- [x] Styles
+- [ ] Log In / Sign up
