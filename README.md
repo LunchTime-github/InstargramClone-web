@@ -12,7 +12,7 @@
 
 ## Set Up
 
-- [ ] Router
+- [x] Router
 - [ ] Authentication
 - [ ] Arch.
 - [ ] Styles
