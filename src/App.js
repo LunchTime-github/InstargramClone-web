@@ -1,12 +1,8 @@
 import { useReactiveVar } from "@apollo/client";
-import {
-  HashRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { darkModeVar, isLoggedInVar } from "./apollo";
+import routes from "./routes";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
@@ -21,19 +17,17 @@ function App() {
       <GlobalStyles />
       <Router>
         <Switch>
-          <Route path="/" exact>
+          <Route path={routes.home} exact>
             {isLoggedIn ? <Home /> : <Login />}
           </Route>
           {!isLoggedIn && (
-            <Route path="/sign-up">
+            <Route path={routes.signUp}>
               <SignUp />
             </Route>
           )}
-          <Route path="/login">
-            <h1>Page Loggedin</h1>
-            {!isLoggedIn && "Piz.Login"}
+          <Route>
+            <h1>Not Found</h1>
           </Route>
-          <Redirect to={"/"} />
         </Switch>
       </Router>
     </ThemeProvider>
