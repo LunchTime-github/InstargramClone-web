@@ -2,13 +2,21 @@ import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
 export const lightTheme = {
-  fontColor: "#2c2c2c",
+  accent: "rgba(0, 149, 246)",
+  borderColor: "#dbdbdb",
+  borderFocusColor: "#666666",
   bgColor: "#fafafa",
+  boxBg: "white",
+  fontColor: "#2c2c2c",
 };
 
 export const darkTheme = {
-  fontColor: "white",
+  accent: "rgba(0, 149, 246)",
+  borderColor: "#dbdbdb",
+  borderFocusColor: "#aaaaaa",
   bgColor: "#333333",
+  boxBg: "#444444",
+  fontColor: "white",
 };
 
 const GlobalStyles = createGlobalStyle`
