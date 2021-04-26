@@ -12,6 +12,7 @@ import AuthOrLine from "../components/auth/AuthOrLine";
 import AuthTitle from "../components/auth/AuthTitle";
 import AuthBottomBox from "../components/auth/AuthBottomBox";
 import routes from "../routes";
+import PageTitle from "../components/shared/PageTitle";
 
 const AuthSubTitle = styled.h6`
   font-size: 16px;
@@ -21,6 +22,7 @@ const AuthSubTitle = styled.h6`
 
 const SignUp = () => (
   <AuthLayout>
+    <PageTitle title="Sign up" />
     <WhiteBox>
       <AuthTitle />
       <AuthSubTitle>친구들의 사진과 동영상을 보려면 가입하세요.</AuthSubTitle>

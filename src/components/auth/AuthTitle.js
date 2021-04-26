@@ -6,14 +6,16 @@ const Title = styled.h1`
   margin: 40px 0;
 `;
 
-const AuthTitle = () => (
-  <Title>
-    <FontAwesomeIcon
-      icon={faInstagram}
-      size={"5x"}
-      color={(props) => props.theme.fontColor}
-    />
-  </Title>
-);
+const FontIcon = styled(FontAwesomeIcon)`
+  color: ${(props) => props.theme.fontColor};
+`;
+
+const AuthTitle = () => {
+  return (
+    <Title>
+      <FontIcon icon={faInstagram} size={"5x"} />
+    </Title>
+  );
+};
 
 export default AuthTitle;
