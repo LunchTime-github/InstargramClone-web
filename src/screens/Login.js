@@ -23,7 +23,7 @@ const Login = () => {
     mode: "onChange",
   });
   const onSubmitVaild = (data) => {
-    //console.log(data);
+    console.log(data);
   };
   return (
     <AuthLayout>
