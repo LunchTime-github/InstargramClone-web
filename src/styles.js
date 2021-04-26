@@ -8,6 +8,7 @@ export const lightTheme = {
   bgColor: "#fafafa",
   boxBg: "white",
   fontColor: "#2c2c2c",
+  textInputColor: "#f2f2f2"
 };
 
 export const darkTheme = {
@@ -17,6 +18,7 @@ export const darkTheme = {
   bgColor: "#333333",
   boxBg: "#444444",
   fontColor: "white",
+  textInputColor: "#363636"
 };
 
 const GlobalStyles = createGlobalStyle`

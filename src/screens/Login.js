@@ -1,26 +1,16 @@
 import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styled from "styled-components";
 import AuthLayout from "../components/auth/AuthLayout";
-import { InputSubmitButton, InputText } from "../components/auth/Inputs";
+import {
+  FacebookLogin,
+  InputSubmitButton,
+  InputText,
+} from "../components/auth/Inputs";
 import WhiteBox from "../components/shared/WhiteBox";
 import AuthOrLine from "../components/auth/AuthOrLine";
 import AuthTitle from "../components/auth/AuthTitle";
 import AuthBottomBox from "../components/auth/AuthBottomBox";
 import routes from "../routes";
-
-const FacebookLogin = styled.a`
-  cursor: pointer;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #385185;
-
-  span {
-    margin-left: 6px;
-  }
-`;
 
 const Login = () => (
   <AuthLayout>

@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const InputStyle = styled.input`
+const inputCss = css`
   box-sizing: border-box;
   display: block;
   width: 100%;
@@ -10,20 +10,25 @@ const InputStyle = styled.input`
   line-height: 16px;
 `;
 
-const SInputText = styled(InputStyle)`
+const InputStyle = styled.input`
+  ${inputCss}
+`;
+
+export const InputText = styled(InputStyle)`
   margin: 10px 0;
   border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 5px;
   padding: 12px 8px;
-  background-color: ${(props) => props.theme.boxBg};
+  background-color: ${(props) => props.theme.textInputColor};
   color: ${(props) => props.theme.fontColor};
 
   &:focus {
+    background-color: ${(props) => props.theme.boxBg};
     border-color: ${(props) => props.theme.borderFocusColor};
   }
 `;
 
-const SInputButton = styled(InputStyle)`
+const buttonCss = css`
   cursor: pointer;
 
   margin: 15px 0;
@@ -36,6 +41,28 @@ const SInputButton = styled(InputStyle)`
   font-weight: 700;
 `;
 
-export const InputText = (props) => <SInputText {...props} />;
+export const InputSubmitButton = styled(InputStyle)`
+  ${buttonCss}
+`;
 
-export const InputSubmitButton = (props) => <SInputButton {...props} />;
+export const FacebookLogin = styled.a`
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #385185;
+
+  span {
+    margin-left: 6px;
+  }
+`;
+
+const SInputButton = styled(FacebookLogin)`
+  ${inputCss}
+  ${buttonCss}
+`;
+
+export const InputButton = ({ children }) => (
+  <SInputButton>{children}</SInputButton>
+);

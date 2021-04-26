@@ -10,6 +10,7 @@
 - graphql
 - react-helmet-async
 - @fortawesome/react-fontawesome
+- prop-types
 
 ## Set Up
 
