@@ -35,7 +35,8 @@ const buttonCss = css`
   border: 0;
   border-radius: 5px;
   padding: 8px;
-  background-color: ${(props) => props.theme.accent};
+  background-color: ${(props) =>
+    props.disabled ? props.theme.accent : props.theme.accentDisabled};
 
   color: white;
   font-weight: 700;

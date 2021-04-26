@@ -15,36 +15,43 @@ import PageTitle from "../components/shared/PageTitle";
 import { useForm } from "react-hook-form";
 
 const Login = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "onChange",
+  });
   const onSubmitVaild = (data) => {
-    console.log(data);
+    //console.log(data);
   };
-  const onSubmitInvaild = (data) => {
-    console.log(data, "invaild");
-  };
-
   return (
     <AuthLayout>
       <PageTitle title="Login" />
       <WhiteBox>
         <AuthTitle />
-        <form onSubmit={handleSubmit(onSubmitVaild, onSubmitInvaild)}>
+        <form onSubmit={handleSubmit(onSubmitVaild)}>
           <InputText
             {...register("username", {
-              required: true,
-              minLength: 5,
+              required: "username is not required",
+              minLength: {
+                value: 5,
+                message: "Username should be longer then 5 chars",
+              },
             })}
             type="text"
             placeholder="전화번호, 사용자 이름 또는 이메일"
           />
+          {errors?.username?.message}
           <InputText
             {...register("password", {
-              required: true,
+              required: "password is not required",
             })}
             type="password"
             placeholder="비밀번호"
           />
-          <InputSubmitButton type="submit" value="로그인" />
+          {errors?.password?.message}
+          <InputSubmitButton type="submit" value="로그인" disabled={isValid} />
         </form>
         <AuthOrLine />
         <FacebookLogin>

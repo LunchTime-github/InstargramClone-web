@@ -3,6 +3,7 @@ import reset from "styled-reset";
 
 export const lightTheme = {
   accent: "rgba(0, 149, 246)",
+  accentDisabled: "rgba(0, 149, 246, 0.3)",
   borderColor: "#dbdbdb",
   borderFocusColor: "#666666",
   bgColor: "#fafafa",
@@ -13,6 +14,7 @@ export const lightTheme = {
 
 export const darkTheme = {
   accent: "rgba(0, 149, 246)",
+  accentDisabled: "rgba(0, 149, 246, 0.3)",
   borderColor: "#dbdbdb",
   borderFocusColor: "#aaaaaa",
   bgColor: "#333333",
