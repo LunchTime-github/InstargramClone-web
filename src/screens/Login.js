@@ -14,9 +14,9 @@ import routes from "../routes";
 import PageTitle from "../components/shared/PageTitle";
 import { useForm } from "react-hook-form";
 import gql from "graphql-tag";
-import { useMutation } from "@apollo/client";
+import { useMutation, useReactiveVar } from "@apollo/client";
 import { useCallback } from "react";
-import { accountMsg, logUserIn } from "../apollo";
+import { accountMsgVar, logUserIn } from "../apollo";
 
 const LOGIN_MUTATION = gql`
   mutation login($username: String!, $password: String!) {
@@ -29,6 +29,7 @@ const LOGIN_MUTATION = gql`
 `;
 
 const Login = () => {
+  const accountMsg = useReactiveVar(accountMsgVar);
   const {
     register,
     handleSubmit,
@@ -40,8 +41,8 @@ const Login = () => {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      username: accountMsg()?.username || "",
-      password: accountMsg()?.password || "",
+      username: accountMsg?.username || "",
+      password: accountMsg?.password || "",
     },
   });
 
@@ -82,7 +83,7 @@ const Login = () => {
       <PageTitle title="Login" />
       <WhiteBox>
         <AuthTitle />
-        {accountMsg()?.message}
+        {accountMsg?.message}
         <form onSubmit={handleSubmit(onSubmitVaild)}>
           <InputText
             ref={register({

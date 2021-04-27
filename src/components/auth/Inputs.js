@@ -52,7 +52,7 @@ export const FacebookLogin = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #385185;
+  color: ${(props) => props.theme.accent};
 
   span {
     margin-left: 6px;
