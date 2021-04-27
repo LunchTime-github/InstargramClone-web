@@ -17,7 +17,8 @@ import gql from "graphql-tag";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { useCallback } from "react";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
+import { accountMsg } from "../apollo";
 
 const AuthSubTitle = styled.h6`
   font-size: 16px;
@@ -51,6 +52,7 @@ const SignUp = () => {
     register,
     handleSubmit,
     errors,
+    getValues,
     formState: { isValid },
     setError,
     clearErrors,
@@ -73,9 +75,16 @@ const SignUp = () => {
         return;
       }
 
+      const { username, password } = getValues();
+
+      accountMsg({
+        message: "계정이 생성되었습니다.",
+        username,
+        password,
+      });
       history.push(routes.home);
     },
-    onError: (data) => {
+    onError: () => {
       setError("result", {
         message: "동일한 이름 혹은 이메일을 가진 사용자가 있습니다",
       });

@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 import { useCallback } from "react";
-import { logUserIn } from "../apollo";
+import { accountMsg, logUserIn } from "../apollo";
 
 const LOGIN_MUTATION = gql`
   mutation login($username: String!, $password: String!) {
@@ -39,6 +39,10 @@ const Login = () => {
     clearErrors,
   } = useForm({
     mode: "onChange",
+    defaultValues: {
+      username: accountMsg()?.username || "",
+      password: accountMsg()?.password || "",
+    },
   });
 
   const [login, { loading }] = useMutation(LOGIN_MUTATION, {
@@ -78,6 +82,7 @@ const Login = () => {
       <PageTitle title="Login" />
       <WhiteBox>
         <AuthTitle />
+        {accountMsg()?.message}
         <form onSubmit={handleSubmit(onSubmitVaild)}>
           <InputText
             ref={register({
