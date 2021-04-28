@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 const SAvatar = styled.div`
-  width: 30px;
-  height: 30px;
+  width: ${(props) => (props.lg ? "30px" : "24px")};
+  height: ${(props) => (props.lg ? "30px" : "24px")};
   border-radius: 50%;
   background-color: ${(props) => props.theme.fontColor};
   background-image: url(${(props) => props.url});
@@ -10,8 +10,8 @@ const SAvatar = styled.div`
   background-position: center;
 `;
 
-const Avatar = ({ url = "" }) => {
-  return <SAvatar url={url}></SAvatar>;
+const Avatar = ({ url = "", lg }) => {
+  return <SAvatar url={url} lg={lg}></SAvatar>;
 };
 
 export default Avatar;

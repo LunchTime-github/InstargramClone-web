@@ -1,6 +1,6 @@
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
-import { faCompass, faUser } from "@fortawesome/free-regular-svg-icons";
+import { faCompass } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { useReactiveVar } from "@apollo/client";
