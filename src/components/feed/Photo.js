@@ -11,6 +11,7 @@ import styled from "styled-components";
 import Avatar from "../shared/Avatar";
 import FatText from "../shared/FatText";
 import { gql, useMutation } from "@apollo/client";
+import { useCallback } from "react";
 
 const PhotoContainer = styled.div`
   border: 1px solid ${(props) => props.theme.borderColor};
@@ -85,10 +86,38 @@ const TOGGLE_LIKE_MUTATION = gql`
 `;
 
 const Photo = ({ id, user, file, isMine, isLiked, totalLike }) => {
+  const updateToggleLike = useCallback(
+    (cache, result) => {
+      const {
+        data: {
+          toggleLike: { ok },
+        },
+      } = result;
+
+      if (ok) {
+        cache.writeFragment({
+          id: `Photo:${id}`,
+          fragment: gql`
+            fragment AnyName on Photo {
+              isLiked
+              totalLike
+            }
+          `,
+          data: {
+            isLiked: !isLiked,
+            totalLike: !isLiked ? totalLike + 1 : totalLike - 1,
+          },
+        });
+      }
+    },
+    [id, isLiked, totalLike]
+  );
+
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE_MUTATION, {
     variables: {
       id,
     },
+    update: updateToggleLike,
   });
 
   return (
@@ -98,7 +127,7 @@ const Photo = ({ id, user, file, isMine, isLiked, totalLike }) => {
         <Username>{user.username}</Username>
       </PhotoHeader>
       <PhotoFile>
-        <img src={file} alt="" />
+        <img src={file} alt={user.username} />
       </PhotoFile>
       <PhotoData>
         <PhotoActions>

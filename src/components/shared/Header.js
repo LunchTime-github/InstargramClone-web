@@ -1,10 +1,15 @@
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
-import { faCompass } from "@fortawesome/free-regular-svg-icons";
+import { faCompass, faMoon, faSun } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { useReactiveVar } from "@apollo/client";
-import { isLoggedInVar } from "../../apollo";
+import {
+  darkModeVar,
+  disableDarkMode,
+  enableDarkMode,
+  isLoggedInVar,
+} from "../../apollo";
 import { Link } from "react-router-dom";
 import routes from "../../routes";
 import useUser from "../../hooks/useUser";
@@ -68,6 +73,7 @@ const Button = styled.span`
 
 const Header = () => {
   const isLoggedIn = useReactiveVar(isLoggedInVar);
+  const darkMode = useReactiveVar(darkModeVar);
   const { data } = useUser();
 
   return (
@@ -79,6 +85,9 @@ const Header = () => {
           </IconButton>
         </SColumn>
         <SColumn>
+          <IconButton onClick={darkMode ? disableDarkMode : enableDarkMode}>
+            <FontIcon icon={darkMode ? faSun : faMoon} />
+          </IconButton>
           {isLoggedIn ? (
             <>
               <IconButton>
