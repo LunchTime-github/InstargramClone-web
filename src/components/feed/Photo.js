@@ -12,6 +12,7 @@ import Avatar from "../shared/Avatar";
 import FatText from "../shared/FatText";
 import { gql, useMutation } from "@apollo/client";
 import { useCallback } from "react";
+import Comments from "./Comments";
 
 const PhotoContainer = styled.div`
   border: 1px solid ${(props) => props.theme.borderColor};
@@ -85,7 +86,17 @@ const TOGGLE_LIKE_MUTATION = gql`
   }
 `;
 
-const Photo = ({ id, user, file, isMine, isLiked, totalLike }) => {
+const Photo = ({
+  id,
+  user,
+  file,
+  isMine,
+  isLiked,
+  totalLike,
+  caption,
+  totalComment,
+  comments,
+}) => {
   const updateToggleLike = useCallback(
     (cache, result) => {
       const {
@@ -165,6 +176,12 @@ const Photo = ({ id, user, file, isMine, isLiked, totalLike }) => {
           </div>
         </PhotoActions>
         <Likes>{totalLike}명이 좋아합니다</Likes>
+        <Comments
+          author={user.username}
+          caption={caption}
+          totalComment={totalComment}
+          comments={comments}
+        />
       </PhotoData>
     </PhotoContainer>
   );
@@ -180,6 +197,20 @@ Photo.propTypes = {
   isMine: PropTypes.bool.isRequired,
   isLiked: PropTypes.bool.isRequired,
   totalLike: PropTypes.number.isRequired,
+  caption: PropTypes.string,
+  totalComment: PropTypes.number.isRequired,
+  comments: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      user: PropTypes.shape({
+        avatar: PropTypes.string,
+        username: PropTypes.string.isRequired,
+      }),
+      payload: PropTypes.string.isRequired,
+      isMine: PropTypes.bool.isRequired,
+      createdAt: PropTypes.string.isRequired,
+    })
+  ),
 };
 
 export default Photo;
