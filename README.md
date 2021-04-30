@@ -11,6 +11,7 @@
 - react-helmet-async
 - @fortawesome/react-fontawesome
 - prop-types
+- sanitize-html
 
 ## Set Up
 
@@ -18,4 +19,4 @@
 - [x] Authentication
 - [x] Arch.
 - [x] Styles
-- [ ] Log In / Sign up
+- [x] Log In / Sign up
