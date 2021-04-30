@@ -1,7 +1,8 @@
+import React from "react";
 import styled from "styled-components";
 import FatText from "../shared/FatText";
 import PropTypes from "prop-types";
-import sanitize from "sanitize-html";
+import { Link } from "react-router-dom";
 
 const CommentContainer = styled.div`
   margin-bottom: 15px;
@@ -9,28 +10,30 @@ const CommentContainer = styled.div`
 const CommentCaption = styled.span`
   margin-left: 10px;
   color: ${(props) => props.theme.fontColor};
-  mark {
-    cursor: pointer;
-    background-color: inherit;
-    color: ${(props) => props.theme.accent};
-    &:hover {
-      text-decoration: underline;
-    }
+`;
+const HashtagLink = styled(Link)`
+  cursor: pointer;
+  background-color: inherit;
+  color: ${(props) => props.theme.accent};
+  &:hover {
+    text-decoration: underline;
   }
 `;
 
 const Comment = ({ author, payload }) => {
-  const cleanPayload = sanitize(payload.replace(/#[\w]+/g, "<mark>$&</mark>"), {
-    allowedTags: ["mark"],
-  });
+  const cleanPayload = payload.split(" ").map((word, index) =>
+    /^#[\w]+/.test(word) ? (
+      <React.Fragment key={index}>
+        <HashtagLink to={`/hashtags/${word}`}>{word}</HashtagLink>{" "}
+      </React.Fragment>
+    ) : (
+      <React.Fragment key={index}>{word} </React.Fragment>
+    )
+  );
   return (
     <CommentContainer>
       <FatText>{author}</FatText>
-      <CommentCaption
-        dangerouslySetInnerHTML={{
-          __html: cleanPayload,
-        }}
-      />
+      <CommentCaption>{cleanPayload}</CommentCaption>
     </CommentContainer>
   );
 };
