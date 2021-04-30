@@ -106,33 +106,42 @@ const Photo = ({
       } = result;
 
       if (ok) {
-        const fragmentID = `Photo:${id}`;
-        const fragment = gql`
-          fragment AnyName on Photo {
-            isLiked
-            totalLike
-          }
-        `;
-        const result = cache.readFragment({
-          id: fragmentID,
-          fragment,
+        const photoID = `Photo:${id}`;
+        cache.modify({
+          id: photoID,
+          fields: {
+            isLiked: (prev) => !prev,
+            totalLike: (prev) => (isLiked ? prev - 1 : prev + 1),
+          },
         });
-        if ("isLiked" in result && "totalLike" in result) {
-          const { isLiked: cacheIsLiked, totalLike: cacheTotalLike } = result;
-          cache.writeFragment({
-            id: fragmentID,
-            fragment,
-            data: {
-              isLiked: !cacheIsLiked,
-              totalLike: !cacheIsLiked
-                ? cacheTotalLike + 1
-                : cacheTotalLike - 1,
-            },
-          });
-        }
+
+        // const fragmentID = `Photo:${id}`;
+        // const fragment = gql`
+        //   fragment AnyName on Photo {
+        //     isLiked
+        //     totalLike
+        //   }
+        // `;
+        // const result = cache.readFragment({
+        //   id: fragmentID,
+        //   fragment,
+        // });
+        // if ("isLiked" in result && "totalLike" in result) {
+        //   const { isLiked: cacheIsLiked, totalLike: cacheTotalLike } = result;
+        //   cache.writeFragment({
+        //     id: fragmentID,
+        //     fragment,
+        //     data: {
+        //       isLiked: !cacheIsLiked,
+        //       totalLike: !cacheIsLiked
+        //         ? cacheTotalLike + 1
+        //         : cacheTotalLike - 1,
+        //     },
+        //   });
+        // }
       }
     },
-    [id]
+    [id, isLiked]
   );
 
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE_MUTATION, {
