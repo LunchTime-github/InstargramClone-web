@@ -4,7 +4,7 @@
 
 - styled-components
 - styled-reset
-- react-hook-form
+- react-hook-form @6.15.1
 - react-router-dom
 - @apollo/client
 - graphql

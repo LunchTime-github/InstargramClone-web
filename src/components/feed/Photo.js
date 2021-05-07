@@ -186,6 +186,7 @@ const Photo = ({
         </PhotoActions>
         <Likes>{totalLike}명이 좋아합니다</Likes>
         <Comments
+          photoId={id}
           author={user.username}
           caption={caption}
           totalComment={totalComment}
