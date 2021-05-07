@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import FatText from "../shared/FatText";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { gql, useMutation } from "@apollo/client";
+
+const DELETE_COMMENT_MUTATION = gql`
+  mutation deleteComment($id: Int!) {
+    deleteComment(id: $id) {
+      ok
+    }
+  }
+`;
 
 const CommentContainer = styled.div`
   margin-bottom: 15px;
@@ -20,7 +29,37 @@ const HashtagLink = styled(Link)`
   }
 `;
 
-const Comment = ({ author, payload }) => {
+const Comment = ({ id, photoId, author, payload, isMine }) => {
+  const deleteCommentUpdate = useCallback(
+    (cache, result) => {
+      const {
+        data: {
+          deleteComment: { ok },
+        },
+      } = result;
+
+      if (ok) {
+        cache.evict({ id: `Comment:${id}` });
+        cache.modify({
+          id: `Photo:${photoId}`,
+          fields: {
+            totalComment(prev) {
+              return prev - 1;
+            },
+          },
+        });
+      }
+    },
+    [id, photoId]
+  );
+  const [deleteCommentMutation] = useMutation(DELETE_COMMENT_MUTATION, {
+    variables: { id },
+    update: deleteCommentUpdate,
+  });
+  const onDelectClick = useCallback(() => {
+    deleteCommentMutation();
+  }, [deleteCommentMutation]);
+
   const cleanPayload = payload.split(" ").map((word, index) =>
     /^#[\w]+/.test(word) ? (
       <React.Fragment key={index}>
@@ -34,13 +73,17 @@ const Comment = ({ author, payload }) => {
     <CommentContainer>
       <FatText>{author}</FatText>
       <CommentCaption>{cleanPayload}</CommentCaption>
+      {isMine ? <button onClick={onDelectClick}>❌</button> : null}
     </CommentContainer>
   );
 };
 
 Comment.propTypes = {
+  id: PropTypes.number,
+  photoId: PropTypes.number,
   author: PropTypes.string.isRequired,
   payload: PropTypes.string.isRequired,
+  isMine: PropTypes.bool,
 };
 
 export default Comment;

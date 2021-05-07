@@ -57,7 +57,7 @@ const Comments = ({ photoId, author, caption, totalComment, comments }) => {
           payload,
           user: { ...userData.me },
         };
-        const newCacheComment =  cache.writeFragment({
+        const newCacheComment = cache.writeFragment({
           data: newComment,
           fragment: gql`
             fragment BSName on Comment {
@@ -108,8 +108,11 @@ const Comments = ({ photoId, author, caption, totalComment, comments }) => {
         {comments?.map((comment) => (
           <Comment
             key={comment.id}
+            id={comment.id}
+            photoId={photoId}
             author={comment.user.username}
             payload={comment.payload}
+            isMine={comment.isMine}
           />
         ))}
         <CommentInput>
