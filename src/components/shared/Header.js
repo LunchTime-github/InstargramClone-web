@@ -97,7 +97,9 @@ const Header = () => {
                 <FontIcon icon={faCompass} />
               </IconButton>
               <IconButton>
-                <Avatar url={data?.me?.avatar} />
+                <Link to={`/users/${data?.me?.username}`}>
+                  <Avatar url={data?.me?.avatar} />
+                </Link>
               </IconButton>
             </>
           ) : (

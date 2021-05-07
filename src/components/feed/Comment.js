@@ -71,7 +71,9 @@ const Comment = ({ id, photoId, author, payload, isMine }) => {
   );
   return (
     <CommentContainer>
-      <FatText>{author}</FatText>
+      <Link to={`/users/${author}`}>
+        <FatText>{author}</FatText>
+      </Link>
       <CommentCaption>{cleanPayload}</CommentCaption>
       {isMine ? <button onClick={onDelectClick}>❌</button> : null}
     </CommentContainer>

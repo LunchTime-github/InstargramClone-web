@@ -13,6 +13,7 @@ import FatText from "../shared/FatText";
 import { gql, useMutation } from "@apollo/client";
 import { useCallback } from "react";
 import Comments from "./Comments";
+import { Link } from "react-router-dom";
 
 const PhotoContainer = styled.div`
   border: 1px solid ${(props) => props.theme.borderColor};
@@ -154,8 +155,12 @@ const Photo = ({
   return (
     <PhotoContainer>
       <PhotoHeader>
-        <Avatar url={user.avatar} lg />
-        <Username>{user.username}</Username>
+        <Link to={`/users/${user.username}`}>
+          <Avatar url={user.avatar} lg />
+        </Link>
+        <Link to={`/users/${user.username}`}>
+          <Username>{user.username}</Username>
+        </Link>
       </PhotoHeader>
       <PhotoFile>
         <img src={file} alt={user.username} />
