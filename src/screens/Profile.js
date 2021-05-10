@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback } from "react";
@@ -8,6 +8,7 @@ import FatText from "../components/shared/FatText";
 import { PHOTO_FRAGMENT } from "../fragments";
 import { InputSubmitButton } from "../components/auth/Inputs";
 import PageTitle from "../components/shared/PageTitle";
+import useUser from "../hooks/useUser";
 
 const FOLLEO_USER_MUTATION = gql`
   mutation followUser($username: String!) {
@@ -131,22 +132,50 @@ const ProfileButton = styled(InputSubmitButton).attrs({
 
 const Profile = () => {
   const { username } = useParams();
+  const { data: userData } = useUser();
   const { data, loading } = useQuery(SEE_PROFILE_QUERY, {
     variables: {
       username,
     },
   });
-  const getButton = useCallback((seeProfile) => {
-    const { isMe, isFollowing } = seeProfile;
-    if (isMe) {
-      return <ProfileButton>Edit Profile</ProfileButton>;
-    }
-    if (isFollowing) {
-      return <ProfileButton>UnFollow</ProfileButton>;
-    } else {
-      return <ProfileButton>Follow</ProfileButton>;
-    }
-  }, []);
+  const [followUserMutation] = useMutation(FOLLEO_USER_MUTATION, {
+    variables: { username },
+    refetchQueries: [
+      { query: SEE_PROFILE_QUERY, variables: { username } },
+      {
+        query: SEE_PROFILE_QUERY,
+        variables: { username: userData?.me?.username },
+      },
+    ],
+  });
+  const [unfollowUserMutation] = useMutation(UNFOLLEO_USER_MUTATION, {
+    variables: { username },
+    refetchQueries: [
+      { query: SEE_PROFILE_QUERY, variables: { username } },
+      {
+        query: SEE_PROFILE_QUERY,
+        variables: { username: userData?.me?.username },
+      },
+    ],
+  });
+  const getButton = useCallback(
+    (seeProfile) => {
+      const { isMe, isFollowing } = seeProfile;
+      if (isMe) {
+        return <ProfileButton>Edit Profile</ProfileButton>;
+      }
+      if (isFollowing) {
+        return (
+          <ProfileButton onClick={unfollowUserMutation}>UnFollow</ProfileButton>
+        );
+      } else {
+        return (
+          <ProfileButton onClick={followUserMutation}>Follow</ProfileButton>
+        );
+      }
+    },
+    [followUserMutation, unfollowUserMutation]
+  );
   return (
     <div>
       <PageTitle
