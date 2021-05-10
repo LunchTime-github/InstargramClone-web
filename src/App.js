@@ -37,7 +37,9 @@ function App() {
                 </Route>
               )}
               <Route path={`/users/:username`}>
-                <Profile />
+                <Layout>
+                  <Profile />
+                </Layout>
               </Route>
               <Route>
                 <h1>Not Found</h1>

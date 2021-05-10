@@ -81,7 +81,9 @@ const Header = () => {
       <SWrap>
         <SColumn>
           <IconButton size="lg">
-            <FontIcon icon={faInstagram} />
+            <Link to={`/`}>
+              <FontIcon icon={faInstagram} />
+            </Link>
           </IconButton>
         </SColumn>
         <SColumn>
@@ -91,7 +93,9 @@ const Header = () => {
           {isLoggedIn ? (
             <>
               <IconButton>
-                <FontIcon icon={faHome} />
+                <Link to={`/`}>
+                  <FontIcon icon={faHome} />
+                </Link>
               </IconButton>
               <IconButton>
                 <FontIcon icon={faCompass} />
