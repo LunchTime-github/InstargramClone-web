@@ -1,4 +1,4 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useApolloClient, useMutation, useQuery } from "@apollo/client";
 import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback } from "react";
@@ -133,30 +133,82 @@ const ProfileButton = styled(InputSubmitButton).attrs({
 const Profile = () => {
   const { username } = useParams();
   const { data: userData } = useUser();
+  const client = useApolloClient();
   const { data, loading } = useQuery(SEE_PROFILE_QUERY, {
     variables: {
       username,
     },
   });
+  const followUserCompleted = useCallback(
+    (data) => {
+      const {
+        followUser: { ok },
+      } = data;
+      if (!ok) {
+        return;
+      }
+      const { cache } = client;
+      cache.modify({
+        id: `User:${username}`,
+        fields: {
+          isFollowing(prev) {
+            return true;
+          },
+          totalFollowers(prev) {
+            return prev + 1;
+          },
+        },
+      });
+      cache.modify({
+        id: `User:${userData?.me?.username}`,
+        fields: {
+          totalFollowing(prev) {
+            return prev + 1;
+          },
+        },
+      });
+    },
+    [client, userData, username]
+  );
   const [followUserMutation] = useMutation(FOLLEO_USER_MUTATION, {
     variables: { username },
-    refetchQueries: [
-      { query: SEE_PROFILE_QUERY, variables: { username } },
-      {
-        query: SEE_PROFILE_QUERY,
-        variables: { username: userData?.me?.username },
-      },
-    ],
+    onCompleted: followUserCompleted,
   });
+  const unfollowUserUpdate = useCallback(
+    (cache, result) => {
+      const {
+        data: {
+          unfollowUser: { ok },
+        },
+      } = result;
+      if (!ok) {
+        return;
+      }
+      cache.modify({
+        id: `User:${username}`,
+        fields: {
+          isFollowing(prev) {
+            return false;
+          },
+          totalFollowers(prev) {
+            return prev - 1;
+          },
+        },
+      });
+      cache.modify({
+        id: `User:${userData?.me?.username}`,
+        fields: {
+          totalFollowing(prev) {
+            return prev - 1;
+          },
+        },
+      });
+    },
+    [userData, username]
+  );
   const [unfollowUserMutation] = useMutation(UNFOLLEO_USER_MUTATION, {
     variables: { username },
-    refetchQueries: [
-      { query: SEE_PROFILE_QUERY, variables: { username } },
-      {
-        query: SEE_PROFILE_QUERY,
-        variables: { username: userData?.me?.username },
-      },
-    ],
+    update: unfollowUserUpdate,
   });
   const getButton = useCallback(
     (seeProfile) => {
